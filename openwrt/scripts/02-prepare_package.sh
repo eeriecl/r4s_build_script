@@ -89,6 +89,27 @@ git clone https://$github/immortalwrt/homeproxy package/new/homeproxy
 sed -i "s/ImmortalWrt/OpenWrt/g" package/new/homeproxy/po/zh_Hans/homeproxy.po
 sed -i "s/ImmortalWrt proxy/OpenWrt proxy/g" package/new/homeproxy/htdocs/luci-static/resources/view/homeproxy/{client.js,server.js}
 
+# OpenClash
+git clone https://github.com/eeriecl/luci-app-openclash package/new/openclash --depth=1
+	curl -sL -m 30 --retry 2 https://raw.githubusercontent.com/vernesong/OpenClash/core/master/dev/clash-linux-arm64.tar.gz -o /tmp/clash.tar.gz
+	tar zxvf /tmp/clash.tar.gz -C /tmp >/dev/null 2>&1
+	chmod +x /tmp/clash >/dev/null 2>&1
+	mkdir -p package/new/openclash/root/etc/openclash/core
+	mv /tmp/clash package/new/openclash/root/etc/openclash/core/clash >/dev/null 2>&1
+	rm -rf /tmp/clash* >/dev/null 2>&1
+	
+	curl -sL -m 30 --retry 2 https://raw.githubusercontent.com/vernesong/OpenClash/core/master/premium/clash-linux-arm64-2023.08.17-13-gdcc8d87.gz  -o /tmp/clash_tun.gz
+	gunzip /tmp/clash_tun.gz 
+	chmod +x /tmp/clash_tun >/dev/null 2>&1
+	mv /tmp/clash_tun package/new/openclash/root/etc/openclash/core/clash_tun >/dev/null 2>&1
+	rm -rf /tmp/clash* >/dev/null 2>&1
+	
+	curl -sL -m 30 --retry 2 https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-arm64.tar.gz  -o /tmp/clash_meta.tar.gz
+	tar zxvf /tmp/clash_meta.tar.gz -C /tmp >/dev/null 2>&1
+	chmod +x /tmp/clash >/dev/null 2>&1
+	mv /tmp/clash package/new/openclash/root/etc/openclash/core/clash_meta >/dev/null 2>&1
+	rm -rf /tmp/*>/dev/null 2>&1
+
 # alist
 git clone https://$github/sbwml/openwrt-alist package/new/alist
 
