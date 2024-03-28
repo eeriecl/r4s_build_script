@@ -37,6 +37,7 @@ sed -i 's/procd_set_param stderr $stderr/procd_set_param stderr 0/g' feeds/packa
 sed -i 's/stdout stderr //g' feeds/packages/net/frp/files/frpc.init
 sed -i '/stdout:bool/d;/stderr:bool/d' feeds/packages/net/frp/files/frpc.init
 sed -i '/stdout/d;/stderr/d' feeds/packages/net/frp/files/frpc.config
+curl -s https://$mirror/openwrt/patch/luci/applications/luci-app-frpc-hide-token.patch | patch -p1
 sed -i '/Log stdout/d;/Log stderr/d' feeds/luci/applications/luci-app-frpc/htdocs/luci-static/resources/view/frpc.js
 
 # haproxy - bump version
@@ -75,6 +76,9 @@ git clone https://$github/sbwml/luci-app-airconnect package/new/airconnect
 
 # netkit-ftp
 git clone https://$github/sbwml/package_new_ftp package/new/ftp
+
+# nethogs
+git clone https://github.com/sbwml/package_new_nethogs package/new/nethogs
 
 # SSRP & Passwall
 rm -rf feeds/packages/net/{xray-core,v2ray-core,v2ray-geodata,sing-box}
@@ -150,9 +154,15 @@ sed -i "s/D_GNU_SOURCE/D_GNU_SOURCE -funroll-loops/g" feeds/packages/net/iperf3/
 sed -i 's/services/network/g' feeds/luci/applications/luci-app-nlbwmon/root/usr/share/luci/menu.d/luci-app-nlbwmon.json
 sed -i 's/services/network/g' feeds/luci/applications/luci-app-nlbwmon/htdocs/luci-static/resources/view/nlbw/config.js
 
-#### 磁盘分区 / 清理内存 / 打印机 / 定时重启 / 数据监控 / KMS / 访问控制（互联网时间）/ ADG luci / IP 限速 / 文件管理器 / CPU / 迅雷快鸟
+# custom packages
 rm -rf feeds/packages/utils/coremark
-git clone https://$github/sbwml/openwrt_pkgs package/new/openwrt_pkgs --depth=1
+git clone https://$github/sbwml/openwrt_pkgs package/new/custom --depth=1
+# coremark - prebuilt with gcc14
+if [ "$platform" = "rk3568" ]; then
+    curl -s https://$mirror/openwrt/patch/coremark/coremark.aarch64-4-threads > package/new/custom/coremark/src/musl/coremark.aarch64
+elif [ "$platform" = "rk3399" ]; then
+    curl -s https://$mirror/openwrt/patch/coremark/coremark.aarch64-6-threads > package/new/custom/coremark/src/musl/coremark.aarch64
+fi
 
 # 翻译
 sed -i 's,发送,Transmission,g' feeds/luci/applications/luci-app-transmission/po/zh_Hans/transmission.po

@@ -25,6 +25,9 @@ fi
 # x86 - disable intel_pstate
 sed -i 's/noinitrd/noinitrd intel_pstate=disable/g' target/linux/x86/image/grub-efi.cfg
 
+# x86 - disable mitigations
+sed -i 's/intel_pstate=disable/intel_pstate=disable mitigations=off/g' target/linux/x86/image/grub-efi.cfg
+
 # default LAN IP
 sed -i 's/192.168.1.1/192.168.18.1/g' package/base-files/files/bin/config_generate
 
@@ -48,12 +51,6 @@ git clone https://$github/sbwml/package_kernel_r8152 package/kernel/r8152
 git clone https://$github/sbwml/package_kernel_r8101 package/kernel/r8101
 git clone https://$github/sbwml/package_kernel_r8125 package/kernel/r8125
 git clone https://$github/sbwml/package_kernel_r8126 package/kernel/r8126
-
-# netifd - fix auto-negotiate by upstream
-if [ "$version" = "rc2" ]; then
-    rm -rf package/network/config/netifd
-    cp -a ../master/openwrt-23.05/package/network/config/netifd package/network/config/netifd
-fi
 
 # Optimization level -Ofast
 if [ "$platform" = "x86_64" ]; then
@@ -178,12 +175,6 @@ pushd feeds/luci
     curl -s https://$mirror/openwrt/patch/firewall4/04-luci-add-firewall4-nft-rules-file.patch | patch -p1
 popd
 
-# openssl - bump version
-if [ "$version" = "rc2" ]; then
-    rm -rf package/libs/openssl
-    cp -a ../master/openwrt-23.05/package/libs/openssl package/libs/openssl
-fi
-
 # openssl - quictls
 pushd package/libs/openssl/patches
     curl -sO https://$mirror/openwrt/patch/openssl/quic/0001-QUIC-Add-support-for-BoringSSL-QUIC-APIs.patch
@@ -262,12 +253,6 @@ git clone https://$github/sbwml/feeds_packages_net_curl feeds/packages/net/curl
 # wget - SmartDrive user-agent
 mkdir -p feeds/packages/net/wget/patches
 curl -s https://$mirror/openwrt/patch/user-agent/999-wget-default-useragent.patch > feeds/packages/net/wget/patches/999-wget-default-useragent.patch
-
-# dnsmasq - bump version
-DNSMASQ_VERSION=2.90
-DNSMASQ_HASH=8e50309bd837bfec9649a812e066c09b6988b73d749b7d293c06c57d46a109e4
-sed -ri "s/(PKG_UPSTREAM_VERSION:=)[^\"]*/\1$DNSMASQ_VERSION/;s/(PKG_HASH:=)[^\"]*/\1$DNSMASQ_HASH/" package/network/services/dnsmasq/Makefile
-curl -s https://$mirror/openwrt/patch/dnsmasq/200-ubus_dns.patch > package/network/services/dnsmasq/patches/200-ubus_dns.patch
 
 # Docker
 rm -rf feeds/luci/applications/luci-app-dockerman
@@ -360,10 +345,12 @@ sed -i 's/cheaper = 1/cheaper = 2/g' feeds/packages/net/uwsgi/files-luci-support
 sed -i 's/option timeout 30/option timeout 60/g' package/system/rpcd/files/rpcd.config
 sed -i 's#20) \* 1000#60) \* 1000#g' feeds/luci/modules/luci-base/htdocs/luci-static/resources/rpc.js
 
-# luci - 20_memory & refresh interval
+# luci - 20_memory & 25_storage & refresh interval
 pushd feeds/luci
     curl -s https://$mirror/openwrt/patch/luci/20_memory.js.patch | patch -p1
     curl -s https://$mirror/openwrt/patch/luci/luci-refresh-interval.patch | patch -p1
+    # luci-mod-status: storage index applicable only to valid
+    curl -s https://$mirror/openwrt/patch/luci/luci-mod-status-storage-index-applicable-only-to-val.patch | patch -p1
 popd
 
 # Luci diagnostics.js
@@ -371,6 +358,9 @@ sed -i "s/openwrt.org/www.qq.com/g" feeds/luci/modules/luci-mod-network/htdocs/l
 
 # luci - drop ethernet port status
 rm -f feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/29_ports.js
+
+# luci - rollback dhcp.js
+curl -s https://$mirror/openwrt/patch/luci/dhcp/dhcp.js > feeds/luci/modules/luci-mod-network/htdocs/luci-static/resources/view/network/dhcp.js
 
 # ppp - 2.5.0
 rm -rf package/network/services/ppp
