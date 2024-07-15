@@ -30,9 +30,9 @@ export isCN=`echo $ip_info | grep -Po 'country_code\":"\K[^"]+'`;
 
 # script url
 if [ "$isCN" = "CN" ]; then
-    export mirror=init.cooluc.com
+    export mirror=raw.githubusercontent.com/eeriecl/r4s_build_script/master
 else
-    export mirror=init2.cooluc.com
+    export mirror=raw.githubusercontent.com/eeriecl/r4s_build_script/master
 fi
 
 # github actions - automatically retrieve `github raw` links
@@ -97,7 +97,7 @@ elif [ "$1" = "rc2" ]; then
 fi
 
 # lan
-[ -n "$LAN" ] && export LAN=$LAN || export LAN=10.0.0.1
+[ -n "$LAN" ] && export LAN=$LAN || export LAN=192.168.18.1
 
 # platform
 [ "$2" = "nanopi-r4s" ] && export platform="rk3399" toolchain_arch="nanopi-r4s"
