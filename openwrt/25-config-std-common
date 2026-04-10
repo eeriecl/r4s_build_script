@@ -66,33 +66,33 @@ CONFIG_NGINX_HTTP_SUB=y
 CONFIG_NGINX_STREAM_REAL_IP=y
 
 ### APPS
-CONFIG_PACKAGE_luci-app-airconnect=y
-CONFIG_PACKAGE_luci-app-airplay2=y
-CONFIG_PACKAGE_luci-app-argon-config=y
-CONFIG_PACKAGE_luci-app-aurora-config=y
-CONFIG_PACKAGE_luci-app-autoreboot=y
+# CONFIG_PACKAGE_luci-app-airconnect=y
+# CONFIG_PACKAGE_luci-app-airplay2=y
+# CONFIG_PACKAGE_luci-app-argon-config=y
+# CONFIG_PACKAGE_luci-app-aurora-config=y
+# CONFIG_PACKAGE_luci-app-autoreboot=y
 # CONFIG_PACKAGE_luci-app-bandix is not set
-CONFIG_PACKAGE_luci-app-commands=y
-CONFIG_PACKAGE_luci-app-cpufreq=y
+# CONFIG_PACKAGE_luci-app-commands=y
+# CONFIG_PACKAGE_luci-app-cpufreq=y
 CONFIG_PACKAGE_luci-app-ddns=y
-CONFIG_PACKAGE_luci-app-diskman=y
-CONFIG_PACKAGE_luci-app-quickfile=y
-CONFIG_PACKAGE_luci-app-frpc=y
+# CONFIG_PACKAGE_luci-app-diskman=y
+# CONFIG_PACKAGE_luci-app-quickfile=y
+# CONFIG_PACKAGE_luci-app-frpc=y
 CONFIG_PACKAGE_luci-app-mosdns=y
-CONFIG_PACKAGE_luci-app-natmap=y
-CONFIG_PACKAGE_luci-app-netspeedtest=y
+# CONFIG_PACKAGE_luci-app-natmap=y
+# CONFIG_PACKAGE_luci-app-netspeedtest=y
 CONFIG_PACKAGE_luci-app-nlbwmon=y
-CONFIG_PACKAGE_luci-app-oaf=y
-CONFIG_PACKAGE_luci-app-ramfree=y
-CONFIG_PACKAGE_luci-app-socat=y
-CONFIG_PACKAGE_luci-app-sqm=y
+# CONFIG_PACKAGE_luci-app-oaf=y
+# CONFIG_PACKAGE_luci-app-ramfree=y
+# CONFIG_PACKAGE_luci-app-socat=y
+# CONFIG_PACKAGE_luci-app-sqm=y
 CONFIG_PACKAGE_luci-app-ttyd=y
 CONFIG_PACKAGE_luci-app-upnp=y
-CONFIG_PACKAGE_luci-app-usb-printer=y
+# CONFIG_PACKAGE_luci-app-usb-printer=y
 CONFIG_PACKAGE_luci-app-vlmcsd=y
-CONFIG_PACKAGE_luci-app-webdav=y
+# CONFIG_PACKAGE_luci-app-webdav=y
 CONFIG_PACKAGE_luci-app-wolplus=y
-CONFIG_PACKAGE_luci-app-zerotier=y
+# CONFIG_PACKAGE_luci-app-zerotier=y
 
 ### ImmortalWrt Proxy - nft
 CONFIG_PACKAGE_luci-app-homeproxy=y
