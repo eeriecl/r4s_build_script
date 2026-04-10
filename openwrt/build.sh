@@ -97,7 +97,7 @@ elif [ "$1" = "rc2" ]; then
 fi
 
 # lan
-[ -n "$LAN" ] && export LAN=$LAN || export LAN=10.0.0.1
+[ -n "$LAN" ] && export LAN=$LAN || export LAN=192.168.18.1
 
 # platform
 case "$2" in
